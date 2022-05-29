@@ -6,7 +6,8 @@ import { ProductEdit } from "./products/product-edit/ProductEdit";
 import { LayoutSplashScreen, ContentRoute } from "../../../../_metronic/layout";
 import { CenterPage } from "./centers/CenterPage";
 import { DomainPage } from "./domain/DomainePage";
-import {FormationPage} from "./formations/FormationPage";
+import { FormationPage } from "./formations/FormationPage";
+import { ParticipationPage } from "./participation/ParticipationPage";
 export default function eCommercePage() {
   return (
     <Suspense fallback={<LayoutSplashScreen />}>
@@ -23,6 +24,10 @@ export default function eCommercePage() {
         <ContentRoute path="/users/center" component={CenterPage} />
         <ContentRoute path="/users/domain" component={DomainPage} />
         <ContentRoute path="/users/formation" component={FormationPage} />
+        <ContentRoute
+          path="/users/participation"
+          component={ParticipationPage}
+        />
       </Switch>
     </Suspense>
   );

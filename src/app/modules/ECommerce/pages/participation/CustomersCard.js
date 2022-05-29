@@ -21,15 +21,15 @@ export function CustomersCard() {
 
   return (
     <Card>
-      <CardHeader title="Liste des Categories">
+      <CardHeader title="Liste des participation">
         <CardHeaderToolbar>
-          <button
+          {/* <button
             type="button"
             className="btn btn-primary"
             onClick={customersUIProps.newCustomerButtonClick}
           >
             Nouvelle Categorie
-          </button>
+          </button> */}
         </CardHeaderToolbar>
       </CardHeader>
       <CardBody>

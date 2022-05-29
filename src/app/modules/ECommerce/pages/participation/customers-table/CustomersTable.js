@@ -20,7 +20,8 @@ import * as uiHelpers from "../CustomersUIHelpers";
 import * as columnFormatters from "./column-formatters";
 import { Pagination } from "../../../../../../_metronic/_partials/controls";
 import { useCustomersUIContext } from "../CustomersUIContext";
-import { switchUserState } from "../../../../../redux_main/actions/users.actions";
+import { getparticipationApi } from "../../../../../redux_main/actions/participation.actions";
+import { BASE_URL } from "../../../../../utils/apiHelpers";
 
 export function CustomersTable() {
   // Customers UI Context
@@ -35,10 +36,21 @@ export function CustomersTable() {
       openDeleteCustomerDialog: customersUIContext.openDeleteCustomerDialog,
     };
   }, [customersUIContext]);
-
+  const displayStatus = (status) => {
+    switch (status) {
+      case "EN_COURS":
+        return "En cours";
+      case "CONFIRMED":
+        return "Confirmer";
+      case "REFUSED":
+        return "Refuser";
+      default:
+        return "En Cours";
+    }
+  };
   // Getting curret state of customers list from store (Redux)
   const { currentState } = useSelector(
-    (state) => ({ currentState: state.users }),
+    (state) => ({ currentState: state.participation }),
     shallowEqual
   );
   const { totalCount, entities, listLoading } = currentState;
@@ -49,7 +61,7 @@ export function CustomersTable() {
     // clear selections list
     customersUIProps.setIds([]);
     // server call by queryParams
-
+    dispatch(getparticipationApi());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customersUIProps.queryParams, dispatch]);
   // Table columns
@@ -62,74 +74,98 @@ export function CustomersTable() {
       headerSortingClasses,
     },
     {
-      dataField: "firstName",
-      text: "Firstname",
+      dataField: "title",
+      text: "Titre",
       sort: true,
       sortCaret: sortCaret,
       headerSortingClasses,
-    },
-    {
-      dataField: "lastName",
-      text: "Lastname",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      dataField: "email",
-      text: "Email",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      dataField: "phoneNumber",
-      text: "Numéro Téléphone",
-      sort: false,
-      sortCaret: sortCaret,
-    },
-    {
-      dataField: "role",
-      text: "role",
-      sort: false,
-    },
-    {
-      dataField: "isActive",
-      text: "Etat",
-      sort: false,
       formatter: (text, row) => {
+        console.log("Row", row);
+        return <span>{row && row.offre && row.offre.title}</span>;
+      },
+    },
+    {
+      dataField: "description",
+      text: "description",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+      formatter: (text, row) => {
+        console.log("Row", row);
+        return <span>{row && row.offre && row.offre.description}</span>;
+      },
+    },
+    {
+      dataField: "createdAt",
+      text: "Utilisateut",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+      formatter: (text, row) => {
+        console.log("Row", row);
         return (
-          <div class="custom-control custom-switch">
-            <input
-              type="checkbox"
-              class="custom-control-input"
-              id="customSwitch1"
-              checked={row.isActive}
-              onChange={(e) => {
-                dispatch(switchUserState(row._id, e.target.checked));
-              }}
-            />
-            <label class="custom-control-label" for="customSwitch1">
-              {row.isActive ? "Active" : "Bloquer"}
-            </label>
-          </div>
+          <span>
+            {row &&
+              row.sendedBy &&
+              `${row.sendedBy.firstName} ${row.sendedBy.lastName}`}
+          </span>
         );
       },
     },
     {
-      dataField: "action",
-      text: "Actions",
-      formatter: columnFormatters.ActionsColumnFormatter,
-      formatExtraData: {
-        openEditCustomerDialog: customersUIProps.openEditCustomerDialog,
-        openDeleteCustomerDialog: customersUIProps.openDeleteCustomerDialog,
-      },
-      classes: "text-right pr-0",
-      headerClasses: "text-right pr-3",
-      style: {
-        minWidth: "100px",
+      dataField: "resume",
+      text: "CV",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+      formatter: (text, row) => {
+        console.log("Row", row);
+        return (
+          <a
+            href={`${BASE_URL}/${row.resume}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Afficher
+          </a>
+        );
       },
     },
+    {
+      dataField: "confirmed",
+      text: "Etat",
+      sort: true,
+      sortCaret: sortCaret,
+      headerSortingClasses,
+      formatter: (text, row) => {
+        console.log("Row", row);
+        return <span>{displayStatus(row.confirmed)}</span>;
+        // return (
+        //   <a
+        //     href={`${BASE_URL}/${row.resume}`}
+        //     target="_blank"
+        //     rel="noopener noreferrer"
+        //   >
+        //     Afficher
+        //   </a>
+        // );
+      },
+    },
+
+    // {
+    //   dataField: "action",
+    //   text: "Actions",
+    //   formatter: columnFormatters.ActionsColumnFormatter,
+    //   formatExtraData: {
+    //     openEditCustomerDialog: customersUIProps.openEditCustomerDialog,
+    //     openDeleteCustomerDialog: customersUIProps.openDeleteCustomerDialog,
+    //   },
+    //   classes: "text-right pr-0",
+    //   headerClasses: "text-right pr-3",
+    //   style: {
+    //     minWidth: "100px",
+    //   },
+    // },
   ];
   // Table pagination properties
   const paginationOptions = {

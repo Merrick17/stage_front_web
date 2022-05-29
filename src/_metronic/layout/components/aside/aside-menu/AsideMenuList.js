@@ -84,7 +84,23 @@ export function AsideMenuList({ layoutProps }) {
                       src={toAbsoluteUrl("/media/svg/icons/Design/Layers.svg")}
                     />
                   </span>
-                  <span className="menu-text">Domaine</span>
+                  <span className="menu-text">Categorie</span>
+                </NavLink>
+              </li>
+              <li
+                className={`menu-item ${getMenuItemActive(
+                  "/users/participation",
+                  false
+                )}`}
+                aria-haspopup="true"
+              >
+                <NavLink className="menu-link" to="/users/participation">
+                  <span className="svg-icon menu-icon">
+                    <SVG
+                      src={toAbsoluteUrl("/media/svg/icons/Design/Layers.svg")}
+                    />
+                  </span>
+                  <span className="menu-text">Participation</span>
                 </NavLink>
               </li>
             </>
@@ -125,7 +141,10 @@ export function AsideMenuList({ layoutProps }) {
           <>
             {" "}
             <li
-              className={`menu-item ${getMenuItemActive("/formations/list", false)}`}
+              className={`menu-item ${getMenuItemActive(
+                "/formations/list",
+                false
+              )}`}
               aria-haspopup="true"
             >
               <NavLink className="menu-link" to="/formations">

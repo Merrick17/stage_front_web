@@ -1,4 +1,4 @@
-import { deleteApi, getApi, postApi } from "../../utils/apiHelpers";
+import { deleteApi, getApi, postApi, updateApi } from "../../utils/apiHelpers";
 import {
   GET_USER_LIST_SUCCESS,
   LOGIN_USER,
@@ -82,7 +82,10 @@ export const loginUserApi = (body, navigator, addToast) => async (dispatch) => {
 };
 export const getUserListApi = () => async (dispatch) => {
   try {
-    let result = await getApi("users/");
+    let token = localStorage.getItem("token");
+    let result = await getApi("users/", {
+      headers: { "access-token": token },
+    });
     console.log("Result", result);
     if (result.success) {
       dispatch({
@@ -96,6 +99,21 @@ export const deleteUser = (id) => async (dispatch) => {
   try {
     let result = await deleteApi("users/delete/" + id);
     console.log("Result  Delete", result);
+    if (result) {
+      dispatch(getUserListApi());
+    }
+  } catch (error) {}
+};
+export const switchUserState = (id, isActive) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem("token");
+    let result = await updateApi(
+      "users/switch/" + id,
+      { isActive: isActive },
+      {
+        headers: { "access-token": token },
+      }
+    );
     if (result) {
       dispatch(getUserListApi());
     }
