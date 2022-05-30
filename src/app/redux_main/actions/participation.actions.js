@@ -45,22 +45,22 @@ export const addparticipationApi = (data, addToast) => async (dispatch) => {
     }
   } catch (error) {}
 };
-export const EditparticipationApi = (id, data, addToast) => async (
+export const EditparticipationApi = (id, offreId, data, addToast) => async (
   dispatch
 ) => {
   try {
     dispatch(getparticipation());
     let token = localStorage.getItem("token");
-    let result = await updateApi("participation/edit/" + id, data, {
+    let result = await updateApi("participation/update/" + id, data, {
       headers: { "access-token": token },
     });
     console.log("Result", result);
     if (result.success) {
-      addToast("Ste ajouter avec sucess", { appearance: "success" });
-      dispatch(getparticipationApi());
+      //addToast("Votre confirmation à été envoyé", { appearance: "success" });
+      dispatch(getParticipationByOffer(offreId));
       //navigation.goBack();
     } else {
-      addToast(result.result, { appearance: "danger" });
+      //addToast(result.result, { appearance: "danger" });
     }
   } catch (error) {}
 };
@@ -77,4 +77,15 @@ export const deleteparticipationApi = (id) => async (dispatch) => {
   } catch (error) {}
 };
 
-
+export const getParticipationByOffer = (id) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem("token");
+    console.log("Token", token);
+    dispatch(getparticipation());
+    let result = await getApi("participation/offre/" + id, {
+      headers: { "access-token": token },
+    });
+    console.log("Result", result);
+    dispatch(getparticipationListSuccess(result.result));
+  } catch (error) {}
+};

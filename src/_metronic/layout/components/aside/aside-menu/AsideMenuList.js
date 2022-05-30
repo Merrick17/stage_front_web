@@ -126,7 +126,7 @@ export function AsideMenuList({ layoutProps }) {
               className={`menu-item ${getMenuItemActive("/offres", false)}`}
               aria-haspopup="true"
             >
-              <NavLink className="menu-link" to="/offres">
+              <NavLink className="menu-link" to="/offres/participation/list">
                 <span className="svg-icon menu-icon">
                   <SVG
                     src={toAbsoluteUrl("/media/svg/icons/Design/Layers.svg")}
