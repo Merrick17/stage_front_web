@@ -8,6 +8,7 @@ import objectPath from "object-path";
 import { useHtmlClassService } from "../../../_core/MetronicLayout";
 import { toAbsoluteUrl } from "../../../../_helpers";
 import { DropdownTopbarItemToggler } from "../../../../_partials/dropdowns";
+import { useDispatch, useSelector } from "react-redux";
 
 const perfectScrollbarOptions = {
   wheelSpeed: 2,
@@ -17,7 +18,8 @@ const perfectScrollbarOptions = {
 export function UserNotificationsDropdown() {
   const [key, setKey] = useState("Alerts");
   const bgImage = toAbsoluteUrl("/media/misc/bg-1.jpg");
-
+  const { entities, userInfo } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
   const uiService = useHtmlClassService();
   const layoutProps = useMemo(() => {
     return {
@@ -51,9 +53,7 @@ export function UserNotificationsDropdown() {
             <OverlayTrigger
               placement="bottom"
               overlay={
-                <Tooltip id="user-notification-tooltip">
-                  User Notifications
-                </Tooltip>
+                <Tooltip id="user-notification-tooltip">Messagerie</Tooltip>
               }
             >
               <div
@@ -79,14 +79,11 @@ export function UserNotificationsDropdown() {
                 style={{ backgroundImage: `url(${bgImage})` }}
               >
                 <h4 className="d-flex flex-center rounded-top">
-                  <span className="text-white">User Notifications</span>
-                  <span className="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">
-                    23 new
-                  </span>
+                  <span className="text-white">Messagerie</span>
                 </h4>
 
                 <Tab.Container defaultActiveKey={key}>
-                  <Nav
+                  {/* <Nav
                     as="ul"
                     className="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-line-transparent-white nav-tabs-line-active-border-success mt-3 px-8"
                     onSelect={(_key) => setKey(_key)}
@@ -121,7 +118,7 @@ export function UserNotificationsDropdown() {
                         Logs
                       </Nav.Link>
                     </Nav.Item>
-                  </Nav>
+                  </Nav> */}
 
                   <Tab.Content className="tab-content">
                     <Tab.Pane eventKey="Alerts" className="p-8">
@@ -130,167 +127,42 @@ export function UserNotificationsDropdown() {
                         className="scroll pr-7 mr-n7"
                         style={{ maxHeight: "300px", position: "relative" }}
                       >
-                        <div className="d-flex align-items-center mb-6">
-                          <div className="symbol symbol-40 symbol-light-primary mr-5">
-                            <span className="symbol-label">
-                              <SVG
-                                src={toAbsoluteUrl(
-                                  "/media/svg/icons/Home/Library.svg"
-                                )}
-                                className="svg-icon-lg svg-icon-primary"
-                              ></SVG>
-                            </span>
-                          </div>
-                          <div className="d-flex flex-column font-weight-bold">
-                            <a
-                              href="#"
-                              className="text-dark text-hover-primary mb-1 font-size-lg"
+                        {entities
+                          .filter((elm) => elm._id != userInfo._id)
+                          .map((elm) => (
+                            <div
+                              className="d-flex align-items-center mb-6"
+                              key={elm._id}
+                              style={{ cursor: "pointer" }}
+                              onClick={(e) => {
+                                dispatch({
+                                  type: "SHOW_DISCUSSION",
+                                });
+                              }}
                             >
-                              Briviba SaaS
-                            </a>
-                            <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center mb-6">
-                          <div className="symbol symbol-40 symbol-light-warning mr-5">
-                            <span className="symbol-label">
-                              <SVG
-                                src={toAbsoluteUrl(
-                                  "/media/svg/icons/Communication/Write.svg"
-                                )}
-                                className="svg-icon-lg svg-icon-warning"
-                              ></SVG>
-                            </span>
-                          </div>
-                          <div className="d-flex flex-column font-weight-bold">
-                            <a
-                              href="#"
-                              className="text-dark-75 text-hover-primary mb-1 font-size-lg"
-                            >
-                              Briviba SaaS
-                            </a>
-                            <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center mb-6">
-                          <div className="symbol symbol-40 symbol-light-success mr-5">
-                            <span className="symbol-label">
-                              <SVG
-                                src={toAbsoluteUrl(
-                                  "/media/svg/icons/Communication/Group-chat.svg"
-                                )}
-                                className="svg-icon-lg svg-icon-success"
-                              ></SVG>
-                            </span>
-                          </div>
-                          <div className="d-flex flex-column font-weight-bold">
-                            <a
-                              href="#"
-                              className="text-dark text-hover-primary mb-1 font-size-lg"
-                            >
-                              Briviba SaaS
-                            </a>
-                            <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center mb-6">
-                          <div className="symbol symbol-40 symbol-light-danger mr-5">
-                            <span className="symbol-label">
-                              <SVG
-                                src={toAbsoluteUrl(
-                                  "/media/svg/icons/General/Attachment2.svg"
-                                )}
-                                className="svg-icon-lg svg-icon-danger"
-                              ></SVG>
-                            </span>
-                          </div>
-                          <div className="d-flex flex-column font-weight-bold">
-                            <a
-                              href="#"
-                              className="text-dark text-hover-primary mb-1 font-size-lg"
-                            >
-                              Briviba SaaS
-                            </a>
-                            <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center mb-2">
-                          <div className="symbol symbol-40 symbol-light-info mr-5">
-                            <span className="symbol-label">
-                              <SVG
-                                src={toAbsoluteUrl(
-                                  "/media/svg/icons/General/Attachment2.svg"
-                                )}
-                                className="svg-icon-lg svg-icon-info"
-                              ></SVG>
-                            </span>
-                          </div>
-                          <div className="d-flex flex-column font-weight-bold">
-                            <a
-                              href="#"
-                              className="text-dark text-hover-primary mb-1 font-size-lg"
-                            >
-                              Briviba SaaS
-                            </a>
-                            <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center mb-2">
-                          <div className="symbol symbol-40 symbol-light-info mr-5">
-                            <span className="symbol-label">
-                              <SVG
-                                src={toAbsoluteUrl(
-                                  "/media/svg/icons/Communication/Mail-notification.svg"
-                                )}
-                                className="svg-icon-lg svg-icon-info"
-                              ></SVG>
-                            </span>
-                          </div>
-                          <div className="d-flex flex-column font-weight-bold">
-                            <a
-                              href="#"
-                              className="text-dark text-hover-primary mb-1 font-size-lg"
-                            >
-                              Briviba SaaS
-                            </a>
-                            <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center mb-2">
-                          <div className="symbol symbol-40 symbol-light-info mr-5">
-                            <span className="symbol-label">
-                              <SVG
-                                src={toAbsoluteUrl(
-                                  "/media/svg/icons/Design/Bucket.svg"
-                                )}
-                                className="svg-icon-lg svg-icon-info"
-                              ></SVG>
-                            </span>
-                          </div>
-                          <div className="d-flex flex-column font-weight-bold">
-                            <a
-                              href="#"
-                              className="text-dark text-hover-primary mb-1 font-size-lg"
-                            >
-                              Briviba SaaS
-                            </a>
-                            <span className="text-muted">
-                              PHP, SQLite, Artisan CLIмм
-                            </span>
-                          </div>
-                        </div>
+                              <div className="symbol symbol-40 symbol-light-primary mr-5">
+                                <span className="symbol-label">
+                                  <SVG
+                                    src={toAbsoluteUrl(
+                                      "/media/svg/icons/Communication/Group-chat.svg"
+                                    )}
+                                    className="svg-icon-lg svg-icon-primary"
+                                  ></SVG>
+                                </span>
+                              </div>
+                              <div className="d-flex flex-column font-weight-bold">
+                                <a
+                                  href="#"
+                                  className="text-dark text-hover-primary mb-1 font-size-lg"
+                                >
+                                  {elm.firstName} {elm.lastName}
+                                </a>
+                                {/* <span className="text-muted">
+                                  PHP, SQLite, Artisan CLIмм
+                                </span> */}
+                              </div>
+                            </div>
+                          ))}
                       </PerfectScrollbar>
                     </Tab.Pane>
                     <Tab.Pane
