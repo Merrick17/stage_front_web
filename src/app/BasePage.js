@@ -5,6 +5,7 @@ import { BuilderPage } from "./pages/BuilderPage";
 import { MyPage } from "./pages/MyPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { useSelector } from "react-redux";
+import { ParticipationPage } from "./modules/ECommerce/pages/participation/ParticipationPage";
 
 const GoogleMaterialPage = lazy(() =>
   import("./modules/GoogleMaterialExamples/GoogleMaterialPage")
@@ -50,6 +51,7 @@ export default function BasePage() {
         <Route path="/users" component={ECommercePage} />
         <Route path="/offres" component={OffrePage} />
         <Route path="/formations" component={FormationPage} />
+        <Route path={"/participation"} component={ParticipationPage} />
         <Redirect to="error/error-v1" />
       </Switch>
     </Suspense>

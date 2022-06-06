@@ -24,6 +24,7 @@ export function CustomersPage({ history }) {
       history.push(`/users/customers/${_id}/edit`);
     },
     openDeleteCustomerDialog: (_id) => {
+      console.log("ROW", _id);
       history.push(`/users/customers/${_id}/delete`);
     },
     openDeleteCustomersDialog: () => {

@@ -97,7 +97,10 @@ export const getUserListApi = () => async (dispatch) => {
 };
 export const deleteUser = (id) => async (dispatch) => {
   try {
-    let result = await deleteApi("users/delete/" + id);
+    let token = localStorage.getItem("token");
+    let result = await deleteApi("users/delete/" + id, {
+      headers: { "access-token": token },
+    });
     console.log("Result  Delete", result);
     if (result) {
       dispatch(getUserListApi());
