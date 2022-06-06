@@ -157,7 +157,10 @@ export function AsideMenuList({ layoutProps }) {
               </NavLink>
             </li>
             <li
-              className={`menu-item ${getMenuItemActive("/participation", false)}`}
+              className={`menu-item ${getMenuItemActive(
+                "/participation",
+                false
+              )}`}
               aria-haspopup="true"
             >
               <NavLink className="menu-link" to="/participation">
@@ -181,6 +184,7 @@ export function AsideMenuList({ layoutProps }) {
               dispatch({
                 type: LOGOUT_USER,
               });
+              history.replace("/auth/login");
             }}
           >
             <span className="svg-icon menu-icon">
